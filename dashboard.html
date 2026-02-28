@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dashboard</title>
+</head>
+<body>
+
+<h2>Welcome to Dashboard</h2>
+
+<button onclick="logout()">Logout</button>
+
+<script>
+  const loginData = localStorage.getItem("loginSession");
+
+  if (!loginData) {
+    window.location.href = "index.html";
+  } else {
+    const session = JSON.parse(loginData);
+    const now = new Date().getTime();
+    const expiryTime = 15 * 24 * 60 * 60 * 1000;
+
+    if (now - session.loginTime > expiryTime) {
+      localStorage.removeItem("loginSession");
+      window.location.href = "index.html";
+    }
+  }
+
+  function logout() {
+    localStorage.removeItem("loginSession");
+    window.location.href = "index.html";
+  }
+</script>
