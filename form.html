@@ -1,57 +1,32 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-  <title>Login Page</title>
-</head>
-<body>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <title>Normal Tables | Bootstrap Based Admin Template - Material Design</title>
+    <!-- Favicon-->
+    <link rel="icon" href="../../favicon.ico" type="image/x-icon">
 
-<h2>Login</h2>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
 
-<input type="text" id="username" placeholder="Username"><br><br>
-<input type="password" id="password" placeholder="Password"><br><br>
+    <!-- Bootstrap Core Css -->
+    <link href="https://trollifyindustry.github.io/premjanghela/plugins/bootstrap/css/bootstrap.css" rel="stylesheet">
 
-<button onclick="login()">Login</button>
+    <!-- Waves Effect Css -->
+    <link href="https://trollifyindustry.github.io/premjanghela/plugins/node-waves/waves.css" rel="stylesheet" />
 
-<script>
-  // Check if already logged in
-  const loginData = localStorage.getItem("loginSession");
+    <!-- Animation Css -->
+    <link href="https://trollifyindustry.github.io/premjanghela/plugins/animate-css/animate.css" rel="stylesheet" />
 
-  if (loginData) {
-    const session = JSON.parse(loginData);
-    const now = new Date().getTime();
+    <!-- Custom Css -->
+    <link href="https://trollifyindustry.github.io/premjanghela/css/style.css" rel="stylesheet">
 
-    // 15 days = 15 * 24 * 60 * 60 * 1000
-    const expiryTime = 15 * 24 * 60 * 60 * 1000;
-
-    if (now - session.loginTime < expiryTime) {
-      window.location.href = "dashboard.html";
-    } else {
-      localStorage.removeItem("loginSession");
-    }
-  }
-
-  function login() {
-    const user = document.getElementById("username").value;
-    const pass = document.getElementById("password").value;
-
-    if (user === "abg" && pass === "1234") {
-      const session = {
-        isLoggedIn: true,
-        loginTime: new Date().getTime()
-      };
-
-      localStorage.setItem("loginSession", JSON.stringify(session));
-      window.location.href = "dashboard.html";
-    } else {
-      alert("Invalid Username or Password");
-    }
-  }
-</script>
-
-</body>
-</html>ss/themes instead of get all themes -->
+    <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
     <link href="https://trollifyindustry.github.io/premjanghela/css/themes/all-themes.css" rel="stylesheet" />
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body class="theme-red">
@@ -68,7 +43,7 @@
                     </div>
                 </div>
             </div>
-            <p>Trollify Infotech</p>
+            <p>Please wait...</p>
         </div>
     </div>
     <!-- #END# Page Loader -->
@@ -344,9 +319,7 @@
                     <div class="card">
                         <div class="header">
                             <h2>
-                                PATIENT HISTORY
-                                <small><input type="text" id="searchInput" placeholder="Search by Name, Date, Paid, Due, Test, Hospital..." 
-                                style="width:100%; padding:10px; margin-bottom:10px; border-radius:6px; border:1px solid #ccc;"></small>
+                                PATIENT FORM
                             </h2>
                             <ul class="header-dropdown m-r--5">
                                 <li class="dropdown">
@@ -362,25 +335,26 @@
                             </ul>
                         </div>
                         <div class="body table-responsive">
-                            <table id="table" class="table table-striped">
-                                <thead>
-                                    <tr>
-                                    <th>ID</th>
-                                    <th>Name</th>
-                                    <th>Age</th>
-                                    <th>Date</th>
-                                    <th>Total</th>
-                                    <th>Paid</th>
-                                    <th>Status</th>
-                                    <th>Hospital</th>
-                                    <th>Phone</th>
-                                    <th>Address</th>
-                                    <th>Test</th>
-                                    <th>Photos</th>
-                                    </tr>
-                                </thead>
-                               <tbody></tbody>
-                            </table>
+                            <input style="width:100%;" id="patientId" readonly><br><br>
+                            <input style="width:100%;" id="name" placeholder="Patient Name"><br><br>
+                            <input style="width:100%;" id="age" type="number" placeholder="Age"><br><br>
+                            <input style="width:100%;" id="date" type="date"><br><br>
+                            <input style="width:100%;" id="total" type="number" placeholder="Total Amount"><br><br>
+                            <input style="width:100%;" id="paid" type="number" placeholder="Paid Amount"><br><br>
+                            
+                            <select id="status">
+                            <option value="Paid">Paid</option>
+                            <option value="Due">Due</option>
+                            </select><br><br>
+                            
+                            <input style="width:100%;" id="hospital" placeholder="Hospital Name"><br><br>
+                            <input style="width:100%;" id="phone" placeholder="Phone Number"><br><br>
+                            <input style="width:100%;" id="address" placeholder="Address"><br><br>
+                            <input style="width:100%;" id="testType" placeholder="Test Type"><br><br>
+                            
+                            <input style="width:10p%;" type="file" id="photos" multiple><br>
+                            <button style="width:45%"  onclick="submitForm()" class="btn btn-success m-t-15 waves-effect">Submit</button>
+
                         </div>
                     </div>
                 </div>
@@ -389,175 +363,185 @@
 
         </div>
     </section>
-
+    <style>
+    
+    /* Footer Styles */
+    .footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #F14232;
+    color: white;
+    display: flex;
+    justify-content: space-around;
+    padding: 13px 0;
+    }
+    
+    .footer a {
+    text-decoration: none;
+    color: white;
+    text-align: center;
+    font-size: 16px;
+    }
+    
+    .footer a:hover {
+    color: #000;
+    }
+    
+    .footer-icon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    }
+    
+    
+    /* Body Padding to Avoid Footer Overlap */
+    main {
+    padding-bottom: 60px;
+    text-align: center;
+    }
+    
+    </style>
+    
+    
+    <!-- Footer -->
+    <div class="footer">
+    
+    <a href="dashboard.html"><i class="material-icons">home</i></a> 
+    <a href="form.html"><i class="material-icons">description</i></a>
+    <a href="history.html"><i class="material-icons">assignment_ind</i></a>
+    <a href="user.html"><i class="material-icons">account_circle</i></a>
+    
+    </div>
 <script>
-
 const API = "https://script.google.com/macros/s/AKfycbxYC2scz1V8HGOgAivUOXPTVyRFTBrxW0o80kfEM54wQAFXwS6bCNce8zlBtC1DrOuS6g/exec";
-let lastDataString = "";
 
-// ✅ Render Table
-function renderTable(data){
+async function loadID(){
+ const res = await fetch(API+"?action=getNextID");
+ const id = await res.text();
+ document.getElementById("patientId").value = id;
+}
+loadID();
 
- const tbody = document.querySelector("#table tbody");
- tbody.innerHTML="";
+document.getElementById("paid").addEventListener("input", autoStatus);
+document.getElementById("total").addEventListener("input", autoStatus);
 
- const sortedData = [...data].reverse();
+function autoStatus(){
+ let totalVal = parseFloat(document.getElementById("total").value || 0);
+ let paidVal = parseFloat(document.getElementById("paid").value || 0);
 
- sortedData.forEach(row=>{
+ document.getElementById("status").value =
+   paidVal < totalVal ? "Due" : "Paid";
+}
 
-  let tr=document.createElement("tr");
+function convertToBase64(file){
+ return new Promise((resolve)=>{
+  const reader = new FileReader();
+  reader.onload = ()=> resolve(reader.result.split(",")[1]);
+  reader.readAsDataURL(file);
+ });
+}
 
-  row.forEach((col,i)=>{
+// 🔥 FORM RESET FUNCTION
+function resetForm(){
 
-   let td=document.createElement("td");
+ document.getElementById("name").value = "";
+ document.getElementById("age").value = "";
+ document.getElementById("date").value = "";
+ document.getElementById("total").value = "";
+ document.getElementById("paid").value = "";
+ document.getElementById("status").value = "";
+ document.getElementById("hospital").value = "";
+ document.getElementById("phone").value = "";
+ document.getElementById("address").value = "";
+ document.getElementById("testType").value = "";
+ document.getElementById("photos").value = "";
 
-   // ✅ DATE FORMAT
-   if(i == 3 && col){
-     const d = new Date(col);
-     td.textContent = d.toLocaleDateString('en-GB');
-   }
+ // ID reload
+ loadID();
 
-   // ✅ PHOTO COLUMN
-   else if(i==11 && col){
+ // Date reset to today
+ setTodayDate();
+}
 
-     const urls = col.split(",");
-     const galleryDiv = document.createElement("div");
+async function submitForm(){
 
-     urls.forEach(url=>{
+ Swal.fire({title:"Saving...",allowOutsideClick:false});
+ Swal.showLoading();
 
-       const a=document.createElement("a");
-       a.href=url;
+ const patientId = document.getElementById("patientId").value;
+ const name = document.getElementById("name").value;
+ const age = document.getElementById("age").value;
+ const dateVal = document.getElementById("date").value;
+ const total = document.getElementById("total").value;
+ const paid = document.getElementById("paid").value;
+ const status = document.getElementById("status").value;
+ const hospital = document.getElementById("hospital").value;
+ const phone = document.getElementById("phone").value;
+ const address = document.getElementById("address").value;
+ const testType = document.getElementById("testType").value;
+ const files = document.getElementById("photos").files;
 
-       a.setAttribute("data-sub-html",
-         `<h4>${row[1]}</h4>
-          <p><b>ID:</b> ${row[0]} | <b>Age:</b> ${row[2]}</p>
-          <p><b>Hospital:</b> ${row[7]}</p>
-          <p><b>Test:</b> ${row[10]}</p>
-          <p><b>Status:</b> ${row[6]}</p>`
-       );
+ let photoArr = [];
 
-       const img=document.createElement("img");
-       img.src=url;
-       img.style.width="50px";
-       img.style.margin="4px";
-       img.style.cursor="pointer";
-       img.style.border="1px solid #ddd";
+ for(let file of files){
 
-       a.appendChild(img);
-       galleryDiv.appendChild(a);
-     });
+  const base64 = await convertToBase64(file);
 
-     td.appendChild(galleryDiv);
+  const now = new Date();
+  const dateStr = now.toLocaleDateString("en-GB").replace(/\//g,'');
+  const time = now.getHours().toString().padStart(2,'0')+
+               now.getMinutes().toString().padStart(2,'0');
 
-     setTimeout(()=>{
-       lightGallery(galleryDiv,{
-         selector:'a',
-         download:true,
-         zoom:true,
-         thumbnail:true,
-         plugins:[lgThumbnail, lgZoom]
-       });
-     },50);
+  const fileName = `${patientId}-${name}-${dateStr}-${time}.png`;
 
-   }
-
-   else{
-     td.textContent=col;
-   }
-
-   tr.appendChild(td);
+  photoArr.push({
+    base64: base64,
+    type: file.type,
+    fileName: fileName
   });
+ }
 
-  tbody.appendChild(tr);
+ const data = {
+  id: patientId,
+  name: name,
+  age: age,
+  date: dateVal,
+  total: total,
+  paid: paid,
+  status: status,
+  hospital: hospital,
+  phone: phone,
+  address: address,
+  testType: testType,
+  photos: photoArr
+ };
+
+ await fetch(API,{
+  method:"POST",
+  body:JSON.stringify(data)
  });
 
- // 🔥 Render ke baad filter apply (agar kuch type hai)
- filterTable();
+ Swal.fire("Success","Patient Saved","success");
+
+ // 🔥 FORM CLEAR AFTER SUBMIT
+ resetForm();
 }
 
+// ✅ Auto Select Today's Date
+function setTodayDate(){
+ const today = new Date();
+ const yyyy = today.getFullYear();
+ const mm = String(today.getMonth()+1).padStart(2,'0');
+ const dd = String(today.getDate()).padStart(2,'0');
 
-// ✅ Load From LocalStorage
-function loadFromLocal(){
- const saved = localStorage.getItem("patientData");
- if(saved){
-   const data = JSON.parse(saved);
-   renderTable(data);
-   lastDataString = saved;
- }
+ document.getElementById("date").value = `${yyyy}-${mm}-${dd}`;
 }
 
-
-// ✅ Backend Silent Check
-async function checkForUpdates(){
-
- try{
-   const res = await fetch(API+"?action=getHistory");
-   const data = await res.json();
-
-   const newDataString = JSON.stringify(data);
-
-   if(newDataString !== lastDataString){
-
-     localStorage.setItem("patientData", newDataString);
-     lastDataString = newDataString;
-
-     renderTable(data);
-
-     console.log("New Data Loaded");
-   }
-
- }catch(err){
-   console.log("Server Error");
- }
-
-}
-
-
-// ✅ 🔍 SEARCH FILTER FUNCTION
-function filterTable(){
-
- const input = document.getElementById("searchInput")?.value.toLowerCase() || "";
- const rows = document.querySelectorAll("#table tbody tr");
-
- rows.forEach(row => {
-
-   let text = row.innerText.toLowerCase();
-
-   if(text.includes(input)){
-     row.style.display = "";
-   } else {
-     row.style.display = "none";
-   }
-
- });
-
-}
-
-
-// ✅ Event Listener (safe)
-document.addEventListener("DOMContentLoaded", () => {
-
- const searchInput = document.getElementById("searchInput");
-
- if(searchInput){
-   searchInput.addEventListener("keyup", filterTable);
- }
-
-});
-
-
-// ✅ Initial Load
-loadFromLocal();
-
-// Agar local empty ho
-if(!localStorage.getItem("patientData")){
- checkForUpdates();
-}
-
-// Har 1 sec me check
-setInterval(checkForUpdates, 1000);
-
+setTodayDate();
 </script>
+
     <!-- Jquery Core Js -->
     <script src="https://trollifyindustry.github.io/premjanghela/plugins/jquery/jquery.min.js"></script>
 
@@ -582,6 +566,11 @@ setInterval(checkForUpdates, 1000);
 <script src="https://cdn.jsdelivr.net/npm/lightgallery@2/lightgallery.umd.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lightgallery@2/plugins/thumbnail/lg-thumbnail.umd.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lightgallery@2/plugins/zoom/lg-zoom.umd.js"></script>
+
+
+</body>
+
+</html>t>
 
 
 
